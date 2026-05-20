@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Citizens in the AI Loop — Ashwin Srivastava</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --ink-mid: #2d2d4e;
+    --ink-light: #5a5a7a;
+    --ink-faint: #9090aa;
+    --paper: #fdfcf8;
+    --paper-warm: #f5f2ea;
+    --accent: #c0392b;
+    --accent-mid: #e74c3c;
+    --accent-light: #fadbd8;
+    --gold: #b8860b;
+    --gold-light: #f9f3e0;
+    --teal: #0d6e6e;
+    --teal-light: #e0f2f1;
+    --border: #d8d4cc;
+    --rule: #c0bbb0;
+    --col-width: 680px;
+    --wide-width: 900px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.85;
+    font-weight: 300;
+  }
+
+  /* ── HEADER ── */
+  .journal-header {
+    background: var(--ink);
+    color: #fff;
+    padding: 14px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--paper-warm);
+    border-bottom: 2px solid var(--ink);
+    padding: 64px 40px 56px;
+    max-width: 100%;
+  }
+  .hero-inner {
+    max-width: var(--wide-width);
+    margin: 0 auto;
+  }
+  .label-pre {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .label-pre::before {
+    content: '';
+    display: inline-block;
+    width: 28px;
+    height: 1.5px;
+    background: var(--accent);
+  }
+  h1.title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--ink);
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+  h1.title em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .subtitle {
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--ink-mid);
+    font-style: italic;
+    margin-bottom: 36px;
+    line-height: 1.5;
+  }
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    border-top: 1px solid var(--rule);
+    padding-top: 22px;
+  }
+  .meta-item { display: flex; flex-direction: column; gap: 3px; }
+  .meta-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .meta-value {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--ink);
+    font-family: 'Source Serif 4', serif;
+  }
+
+  /* ── LAYOUT ── */
+  .page-wrap {
+    max-width: var(--wide-width);
+    margin: 0 auto;
+    padding: 64px 40px;
+  }
+
+  /* ── ABSTRACT ── */
+  .abstract-block {
+    background: var(--gold-light);
+    border-left: 3px solid var(--gold);
+    padding: 28px 32px;
+    margin-bottom: 56px;
+    border-radius: 0 4px 4px 0;
+  }
+  .abstract-block .abstract-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+  .abstract-block p {
+    font-size: 15.5px;
+    line-height: 1.8;
+    color: var(--ink-mid);
+  }
+
+  /* ── SECTIONS ── */
+  .section { margin-bottom: 60px; }
+  .section-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  h2.section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 27px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.25;
+    margin-bottom: 22px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--rule);
+  }
+  h3.subsection {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ink-mid);
+    margin: 28px 0 10px;
+    font-style: italic;
+  }
+  p { margin-bottom: 18px; color: var(--ink-mid); }
+  p:last-child { margin-bottom: 0; }
+
+  strong { color: var(--ink); font-weight: 600; }
+  em.key { color: var(--accent); font-style: italic; }
+
+  /* ── PULL QUOTES ── */
+  blockquote.pull {
+    border-left: 3px solid var(--accent);
+    background: var(--accent-light);
+    padding: 20px 24px;
+    margin: 32px 0;
+    border-radius: 0 4px 4px 0;
+  }
+  blockquote.pull p {
+    font-size: 16px;
+    font-style: italic;
+    color: var(--ink);
+    margin: 0;
+    line-height: 1.7;
+  }
+
+  /* ── FIGURE WRAPPER ── */
+  .figure {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 32px;
+    margin: 40px 0;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  }
+  .figure-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .figure-caption {
+    font-size: 13px;
+    color: var(--ink-light);
+    font-style: italic;
+    text-align: center;
+    margin-top: 16px;
+    line-height: 1.5;
+  }
+
+  /* ── COMPARISON TABLE ── */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14.5px;
+    margin: 28px 0;
+  }
+  .compare-table th {
+    padding: 12px 16px;
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .compare-table th:first-child { background: var(--ink); color: #fff; }
+  .compare-table th.hitl-h { background: #e8e6f0; color: var(--ink-mid); }
+  .compare-table th.citl-h { background: var(--ink); color: #fff; }
+  .compare-table td {
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  .compare-table td:first-child { font-weight: 600; color: var(--ink); background: var(--paper-warm); font-size: 13px; }
+  .compare-table td.hitl-c { color: var(--ink-light); background: #f7f6fb; }
+  .compare-table td.citl-c { color: var(--teal); background: var(--teal-light); font-weight: 500; }
+  .compare-table tr:last-child td { border-bottom: none; }
+
+  /* ── DIMENSION CARDS ── */
+  .dim-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin: 28px 0;
+  }
+  .dim-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px;
+    background: #fff;
+    border-top: 3px solid var(--accent);
+  }
+  .dim-card.d2 { border-top-color: var(--teal); }
+  .dim-card.d3 { border-top-color: var(--gold); }
+  .dim-card.d4 { border-top-color: #6c3483; }
+  .dim-card.d5 { border-top-color: #1a6b3c; }
+  .dim-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--border);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .dim-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+  .dim-desc { font-size: 12.5px; color: var(--ink-light); line-height: 1.55; margin: 0; }
+
+  /* ── FOOTNOTES ── */
+  .footnote {
+    font-size: 12.5px;
+    color: var(--ink-faint);
+    border-top: 1px solid var(--rule);
+    padding-top: 8px;
+    margin-top: 24px;
+    font-style: italic;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--ink);
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 32px 40px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    line-height: 1.8;
+  }
+  footer strong { color: rgba(255,255,255,0.85); }
+
+  /* ── SVG CHARTS ── */
+  svg text { font-family: 'Source Serif 4', Georgia, serif; }
+
+  @media (max-width: 680px) {
+    .page-wrap { padding: 40px 20px; }
+    .hero { padding: 40px 20px 36px; }
+    .journal-header { padding: 12px 20px; }
+    .dim-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media print {
+    .journal-header { background: #000; }
+    .figure { page-break-inside: avoid; }
+    .section { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Journal header bar -->
+<div class="journal-header">
+  <span>Pre-Publication Working Paper</span>
+  <span>Sapio Analytics × ARC &nbsp;·&nbsp; May 2026</span>
+  <span>Sovereign Livelihood AI Series</span>
+</div>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="label-pre">Concept Paper &nbsp;/&nbsp; Artificial Intelligence &nbsp;/&nbsp; Livelihood Systems</div>
+    <h1 class="title">Citizens in the <em>AI Loop</em></h1>
+    <div class="subtitle">The Key Driver of Sovereign Livelihood AI</div>
+    <div class="meta-row">
+      <div class="meta-item">
+        <span class="meta-label">Author</span>
+        <span class="meta-value">Ashwin Srivastava</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Affiliation</span>
+        <span class="meta-value">Sapio Analytics × ARC</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Status</span>
+        <span class="meta-value">Pre-Publication · For Review &amp; Circulation</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Series</span>
+        <span class="meta-value">Sovereign Livelihood AI</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Body -->
+<div class="page-wrap">
+
+  <!-- Abstract -->
+  <div class="abstract-block">
+    <div class="abstract-label">Abstract</div>
+    <p>
+      Contemporary AI systems are built on a "Humans in the Loop" (HITL) paradigm in which specialist annotators supply discrete, decontextualised data points to training pipelines. While effective at scale for general intelligence tasks, this architecture is structurally blind to the hyperlocal, culturally embedded knowledge that governs the lived reality of most of humanity — particularly in the domain of livelihood. This paper introduces <strong>Citizens in the Loop (CitL)</strong> as a foundational reconceptualisation of the annotation relationship. Under CitL, every verified citizen is simultaneously an annotator and a richly profiled data source: a single citizen action generates not one but five simultaneous, cross-linked data dimensions. When aggregated, this multi-dimensional intelligence enables AI systems to model livelihood decisions, aspirations, and behaviours with a depth that generic HITL pipelines cannot approach. We describe the theoretical basis of CitL, its technical architecture, and its instantiation as the core driver of <strong>Sovereign Livelihood AI</strong> — illustrated through the Saksham Skill Census (Mumbai Suburban) and the Myanmar financial inclusion programme. The implications extend beyond livelihood to any domain where hyperlocal human cognition is the decisive variable.
+    </p>
+  </div>
+
+  <!-- Section 1 -->
+  <div class="section">
+    <div class="section-number">Section 1</div>
+    <h2 class="section-title">Introduction: The Data Gap That Cannot Be Searched</h2>
+    <p>
+      Ask any large language model — GPT-4, Claude, Gemini — to locate a locality called <strong>"Bihari Gully"</strong> in the Gazdhar Bandh area of Mumbai. It will fail. Not because the model is poorly trained, but because no training pipeline in existence could have prepared it for knowledge that was never digitised. Bihari Gully is home to hundreds of households in one of the world's most connected megacities. It does not appear on Google Maps. It has no Wikipedia page. Its residents do not post about their aspirations on LinkedIn. The locality, and everything its inhabitants know, feel, and need, is invisible to the internet — and therefore invisible to every AI system built upon it.
+    </p>
+    <p>
+      This is not an edge case. Conservative estimates suggest that <strong>more than 80% of the knowledge relevant to human livelihood decisions</strong> — occupational patterns, cultural norms, neighbourhood trust networks, informal income pathways, micro-aspirations — exists nowhere on the public internet. It lives in the minds, behaviours, and daily transactions of ordinary citizens. The dominant AI paradigm has no mechanism to access it.
+    </p>
+    <p>
+      This paper argues that the structural reason for this gap is not a data problem. It is an <em>architectural</em> problem — one that originates in how the field has conceptualised the relationship between human beings and AI training pipelines. The fix requires not more data scraping, but a fundamentally different model of who participates in AI creation and what they contribute when they do.
+    </p>
+    <blockquote class="pull">
+      <p>"The problem is not that we lack data about ordinary citizens. The problem is that the architecture of AI training was never designed to hear them."</p>
+    </blockquote>
+    <p>
+      We introduce <strong>Citizens in the Loop (CitL)</strong> as the corrective architecture — and demonstrate that it is not merely a better annotation method, but the necessary foundation for any AI system that aspires to model human livelihood with real-world fidelity.
+    </p>
+  </div>
+
+  <!-- Section 2 -->
+  <div class="section">
+    <div class="section-number">Section 2</div>
+    <h2 class="section-title">Humans in the Loop: Achievement and Structural Limitation</h2>
+
+    <h3 class="subsection">2.1 What HITL Achieved</h3>
+    <p>
+      The Humans in the Loop paradigm has been one of the most consequential methodological developments in applied AI. Its primary mechanisms — Reinforcement Learning from Human Feedback (RLHF), structured data annotation, red-teaming, and scalable oversight — transformed raw statistical prediction engines into systems capable of nuanced language generation, reasoning, and alignment with human preferences. The foundation models that power the current AI wave are, in large part, products of this methodology.
+    </p>
+    <p>
+      HITL works by inserting human judgement at specific points in the training pipeline: annotators label training data, raters rank model outputs, and specialists probe for failure modes. The cumulative effect is a model that behaves in ways that feel more human, more helpful, and less harmful.
+    </p>
+
+    <h3 class="subsection">2.2 The Structural Limitation: One Action, One Data Point</h3>
+    <p>
+      Yet HITL rests on a critical assumption that is rarely examined: the annotator is a <em>resource</em>, not a <em>subject</em>. They are a processing unit whose job is to produce a label, rank, or correction. Everything about who they are — where they live, what they know, what they aspire to, how their culture shapes their perception — is irrelevant to the pipeline. The annotation is stripped of its context and delivered as a single, flat data point.
+    </p>
+    <p>
+      Consider what is discarded. When a human annotator in Nairobi labels an image of street food as "vendor stall," the pipeline records the label. It does not record that this annotator lives 300 metres from a similar stall; that she has strong views on informal economy regulation; that her labelling instinct is shaped by a specific cultural-economic context that would produce a different label from an annotator in Seoul or São Paulo. The annotation is decontextualised by design.
+    </p>
+    <p>
+      For general-purpose AI tasks, this decontextualisation is acceptable — even desirable. For <strong>livelihood AI</strong>, it is fatal. Livelihood decisions are among the most contextually determined behaviours humans exhibit. A job offer that seems obviously rational from the outside may be declined for reasons rooted in family obligation, neighbourhood reputation, aspirational self-image, or cultural norm — none of which are visible in any labelled dataset produced by a disconnected annotator.
+    </p>
+
+    <!-- Figure 1: HITL vs CitL Comparison Diagram -->
+    <div class="figure">
+      <div class="figure-title">Figure 1 — HITL vs. CitL: Structural Comparison</div>
+      <svg viewBox="0 0 820 340" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:820px;display:block;margin:0 auto;">
+        <!-- Background panels -->
+        <rect x="10" y="10" width="385" height="310" rx="6" fill="#f7f6fb" stroke="#d8d4cc" stroke-width="1"/>
+        <rect x="425" y="10" width="385" height="310" rx="6" fill="#e0f2f1" stroke="#0d6e6e" stroke-width="1.5"/>
+
+        <!-- HITL label -->
+        <rect x="10" y="10" width="385" height="36" rx="6" fill="#2d2d4e"/>
+        <rect x="10" y="34" width="385" height="12" fill="#2d2d4e"/>
+        <text x="202" y="34" text-anchor="middle" fill="white" font-size="13" font-weight="600" letter-spacing="1">HUMANS IN THE LOOP</text>
+
+        <!-- CitL label -->
+        <rect x="425" y="10" width="385" height="36" rx="6" fill="#0d6e6e"/>
+        <rect x="425" y="34" width="385" height="12" fill="#0d6e6e"/>
+        <text x="617" y="34" text-anchor="middle" fill="white" font-size="13" font-weight="600" letter-spacing="1">CITIZENS IN THE LOOP</text>
+
+        <!-- HITL pipeline boxes -->
+        <rect x="40" y="65" width="100" height="38" rx="4" fill="white" stroke="#d8d4cc"/>
+        <text x="90" y="87" text-anchor="middle" fill="#5a5a7a" font-size="11">Specialist</text>
+        <text x="90" y="99" text-anchor="middle" fill="#5a5a7a" font-size="11">Annotator</text>
+
+        <text x="160" y="88" text-anchor="middle" fill="#9090aa" font-size="18">→</text>
+
+        <rect x="175" y="65" width="100" height="38" rx="4" fill="white" stroke="#d8d4cc"/>
+        <text x="225" y="87" text-anchor="middle" fill="#5a5a7a" font-size="11">Single</text>
+        <text x="225" y="99" text-anchor="middle" fill="#5a5a7a" font-size="11">Annotation</text>
+
+        <text x="295" y="88" text-anchor="middle" fill="#9090aa" font-size="18">→</text>
+
+        <rect x="310" y="65" width="68" height="38" rx="4" fill="white" stroke="#d8d4cc"/>
+        <text x="344" y="87" text-anchor="middle" fill="#5a5a7a" font-size="11">1 Data</text>
+        <text x="344" y="99" text-anchor="middle" fill="#5a5a7a" font-size="11">Point</text>
+
+        <!-- HITL limitation bullets -->
+        <text x="40" y="130" fill="#c0392b" font-size="13">✗</text>
+        <text x="56" y="130" fill="#5a5a7a" font-size="12">No geographic context</text>
+        <text x="40" y="150" fill="#c0392b" font-size="13">✗</text>
+        <text x="56" y="150" fill="#5a5a7a" font-size="12">No demographic profile</text>
+        <text x="40" y="170" fill="#c0392b" font-size="13">✗</text>
+        <text x="56" y="170" fill="#5a5a7a" font-size="12">No livelihood context</text>
+        <text x="40" y="190" fill="#c0392b" font-size="13">✗</text>
+        <text x="56" y="190" fill="#5a5a7a" font-size="12">No cognition capture</text>
+        <text x="40" y="210" fill="#c0392b" font-size="13">✗</text>
+        <text x="56" y="210" fill="#5a5a7a" font-size="12">Annotation is decontextualised</text>
+
+        <!-- HITL output -->
+        <rect x="88" y="240" width="190" height="52" rx="4" fill="#e8e6f0" stroke="#d8d4cc"/>
+        <text x="183" y="263" text-anchor="middle" fill="#2d2d4e" font-size="12" font-weight="600">Output: Flat Dataset</text>
+        <text x="183" y="281" text-anchor="middle" fill="#5a5a7a" font-size="11">1 label per annotation</text>
+
+        <!-- CitL pipeline -->
+        <rect x="455" y="65" width="100" height="38" rx="4" fill="white" stroke="#0d6e6e"/>
+        <text x="505" y="84" text-anchor="middle" fill="#0d6e6e" font-size="11" font-weight="600">Verified</text>
+        <text x="505" y="96" text-anchor="middle" fill="#0d6e6e" font-size="11" font-weight="600">Citizen</text>
+
+        <text x="575" y="88" text-anchor="middle" fill="#0d6e6e" font-size="18">→</text>
+
+        <rect x="590" y="56" width="100" height="56" rx="4" fill="white" stroke="#0d6e6e"/>
+        <text x="640" y="76" text-anchor="middle" fill="#0d6e6e" font-size="11" font-weight="600">Single</text>
+        <text x="640" y="89" text-anchor="middle" fill="#0d6e6e" font-size="11" font-weight="600">Annotation</text>
+        <text x="640" y="102" text-anchor="middle" fill="#c0392b" font-size="11">+ 4 Layers</text>
+
+        <!-- 5 data points radiating -->
+        <line x1="700" y1="84" x2="748" y2="60" stroke="#0d6e6e" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <text x="752" y="58" fill="#0d6e6e" font-size="10">Territory</text>
+        <line x1="700" y1="84" x2="748" y2="78" stroke="#0d6e6e" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <text x="752" y="82" fill="#0d6e6e" font-size="10">Demography</text>
+        <line x1="700" y1="84" x2="748" y2="96" stroke="#0d6e6e" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <text x="752" y="100" fill="#0d6e6e" font-size="10">Livelihood</text>
+        <line x1="700" y1="84" x2="748" y2="114" stroke="#6c3483" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <text x="752" y="118" fill="#6c3483" font-size="10">Cognition</text>
+
+        <!-- CitL advantage bullets -->
+        <text x="455" y="150" fill="#0d6e6e" font-size="13">✓</text>
+        <text x="471" y="150" fill="#1a6b3c" font-size="12" font-weight="500">Hyperlocal territory profiling</text>
+        <text x="455" y="170" fill="#0d6e6e" font-size="13">✓</text>
+        <text x="471" y="170" fill="#1a6b3c" font-size="12" font-weight="500">Full demographic context</text>
+        <text x="455" y="190" fill="#0d6e6e" font-size="13">✓</text>
+        <text x="471" y="190" fill="#1a6b3c" font-size="12" font-weight="500">Livelihood as belief proxy</text>
+        <text x="455" y="210" fill="#0d6e6e" font-size="13">✓</text>
+        <text x="471" y="210" fill="#6c3483" font-size="12" font-weight="500">Cognition measured in situ</text>
+
+        <!-- CitL output -->
+        <rect x="453" y="240" width="330" height="52" rx="4" fill="#0d6e6e"/>
+        <text x="618" y="263" text-anchor="middle" fill="white" font-size="12" font-weight="600">Output: Contextual Intelligence Layer</text>
+        <text x="618" y="281" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="11">5 linked dimensions per annotation · 5× minimum data density</text>
+
+        <!-- VS divider -->
+        <circle cx="412" cy="170" r="18" fill="var(--ink)"/>
+        <text x="412" y="175" text-anchor="middle" fill="white" font-size="12" font-weight="700">VS</text>
+      </svg>
+      <div class="figure-caption">HITL produces one decontextualised data point per annotation. CitL produces five cross-linked dimensions per annotation, transforming the annotator from a resource into a profiled intelligence node.</div>
+    </div>
+
+    <!-- Comparison Table -->
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Dimension</th>
+          <th class="hitl-h">Humans in the Loop</th>
+          <th class="citl-h">Citizens in the Loop</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Annotator type</td>
+          <td class="hitl-c">Specialist contractor</td>
+          <td class="citl-c">Verified resident citizen</td>
+        </tr>
+        <tr>
+          <td>Data points per action</td>
+          <td class="hitl-c">1 (the annotation itself)</td>
+          <td class="citl-c">5+ (annotation + 4 profiled dimensions)</td>
+        </tr>
+        <tr>
+          <td>Geographic context</td>
+          <td class="hitl-c">None</td>
+          <td class="citl-c">Hyperlocal territory profile (named, bounded, culturally tagged)</td>
+        </tr>
+        <tr>
+          <td>Demographic context</td>
+          <td class="hitl-c">Irrelevant to pipeline</td>
+          <td class="citl-c">Structurally encoded into every annotation</td>
+        </tr>
+        <tr>
+          <td>Cognition capture</td>
+          <td class="hitl-c">Not attempted</td>
+          <td class="citl-c">Active; via contextual micro-tasks designed for each citizen profile</td>
+        </tr>
+        <tr>
+          <td>Annotation value over time</td>
+          <td class="hitl-c">Static; no compounding</td>
+          <td class="citl-c">Compounds as citizen profile deepens with each interaction</td>
+        </tr>
+        <tr>
+          <td>Can generate new knowledge?</td>
+          <td class="hitl-c">No; limited to labelling existing data</td>
+          <td class="citl-c">Yes; creates ground-truth data that did not exist before</td>
+        </tr>
+        <tr>
+          <td>Policy applicability</td>
+          <td class="hitl-c">General model behaviour only</td>
+          <td class="citl-c">Territory-specific, demographic-specific policy simulation</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+  <!-- Section 3 -->
+  <div class="section">
+    <div class="section-number">Section 3</div>
+    <h2 class="section-title">Citizens in the Loop: The Paradigm Shift</h2>
+
+    <h3 class="subsection">3.1 The Core Reconceptualisation</h3>
+    <p>
+      Citizens in the Loop begins with a deceptively simple inversion: <strong>the annotator is not separate from the subject matter — the annotator is the subject matter.</strong> When a resident of Bihari Gully provides any data point about their livelihood, that data point is inseparable from who they are, where they live, what they believe, and how they think. To strip it of this context — as HITL does by design — is not neutrality. It is a loss of the most valuable signal in the dataset.
+    </p>
+    <p>
+      CitL treats this context not as background noise to be filtered out, but as <em>the primary analytical layer</em>. Every verified citizen in the loop is simultaneously an annotator and a richly profiled node. Their every action in the system is cross-referenced with five dimensions of information — producing not one data point, but five linked, mutually reinforcing data points from a single annotation event.
+    </p>
+
+    <h3 class="subsection">3.2 The Five Dimensions of a CitL Annotation</h3>
+    <p>
+      The foundational innovation of CitL is that a single citizen annotation event generates data across five simultaneous dimensions. These are not supplementary fields; they are structurally built into the data architecture from the point of verification onward.
+    </p>
+
+    <div class="dim-grid">
+      <div class="dim-card d1">
+        <div class="dim-number">D1</div>
+        <div class="dim-title">The Annotation Itself</div>
+        <p class="dim-desc">The direct output of the citizen's action — a response, label, task completion, or stated preference. This is the only data point captured under HITL. Under CitL, it is the trigger that activates four additional dimensions.</p>
+      </div>
+      <div class="dim-card d2">
+        <div class="dim-number">D2</div>
+        <div class="dim-title">Hyperlocal Territory Profile</div>
+        <p class="dim-desc">Every annotation is location-stamped and linked to a named, bounded hyperlocal territory — one that exists in reality but often not on any map. The territory itself carries a profile: its predominant occupational character, cultural composition, informal economy patterns, and infrastructure gaps. The annotation inherits this territorial context automatically.</p>
+      </div>
+      <div class="dim-card d3">
+        <div class="dim-number">D3</div>
+        <div class="dim-title">Demographic Profile</div>
+        <p class="dim-desc">Age, gender, household composition, education level, income band, and family structure are structurally linked to every annotation. Demographic context is not a filter applied in post-processing — it is a live layer that contextualises the annotation at the moment of capture.</p>
+      </div>
+      <div class="dim-card d4">
+        <div class="dim-number">D4</div>
+        <div class="dim-title">Livelihood Profile as Belief Proxy</div>
+        <p class="dim-desc">Occupational history, current livelihood pathways, income volatility, skill profile, and aspiration data are mapped to each annotation. Critically, livelihood data is treated as a proxy for deeper constructs: aspirations, risk appetite, beliefs about formal versus informal work, and cultural norms around economic mobility — all of which are structurally opaque to any internet-trained AI.</p>
+      </div>
+      <div class="dim-card d5">
+        <div class="dim-number">D5</div>
+        <div class="dim-title">Cognition Layer (In-Situ Capture)</div>
+        <p class="dim-desc">The most novel dimension. Cognition is not inferred — it is actively measured through micro-tasks designed specifically for each citizen's profile. A citizen is presented with a scenario drawn from their own context (a familiar livelihood dilemma, a resource allocation problem) and their response is used to map cognitive patterns: risk behaviour, time preference, trust radius, and decision heuristics. This makes CitL self-generating in its intelligence depth.</p>
+      </div>
+    </div>
+
+    <!-- Figure 2: Multi-Dimensional Annotation Architecture -->
+    <div class="figure">
+      <div class="figure-title">Figure 2 — The Multi-Dimensional Annotation Architecture</div>
+      <svg viewBox="0 0 780 420" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:780px;display:block;margin:0 auto;">
+        <!-- Background -->
+        <rect x="0" y="0" width="780" height="420" fill="#fdfcf8" rx="6"/>
+
+        <!-- Central citizen node -->
+        <circle cx="390" cy="200" r="52" fill="#1a1a2e" stroke="#0d6e6e" stroke-width="2.5"/>
+        <text x="390" y="193" text-anchor="middle" fill="white" font-size="12" font-weight="700">VERIFIED</text>
+        <text x="390" y="209" text-anchor="middle" fill="white" font-size="12" font-weight="700">CITIZEN</text>
+        <text x="390" y="225" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="10">1 Action</text>
+
+        <!-- D1: Annotation (top center) -->
+        <circle cx="390" cy="70" r="36" fill="#c0392b"/>
+        <text x="390" y="64" text-anchor="middle" fill="white" font-size="10" font-weight="700">THE</text>
+        <text x="390" y="77" text-anchor="middle" fill="white" font-size="10" font-weight="700">ANNOTATION</text>
+        <text x="390" y="90" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9">D1</text>
+        <line x1="390" y1="148" x2="390" y2="107" stroke="#c0392b" stroke-width="2"/>
+        <polygon points="390,148 385,136 395,136" fill="#c0392b"/>
+
+        <!-- D2: Territory (top left) -->
+        <circle cx="175" cy="100" r="36" fill="#0d6e6e"/>
+        <text x="175" y="91" text-anchor="middle" fill="white" font-size="10" font-weight="700">TERRITORY</text>
+        <text x="175" y="104" text-anchor="middle" fill="white" font-size="10" font-weight="700">PROFILE</text>
+        <text x="175" y="117" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9">D2</text>
+        <line x1="340" y1="168" x2="210" y2="122" stroke="#0d6e6e" stroke-width="2"/>
+        <polygon points="340,168 332,156 346,162" fill="#0d6e6e"/>
+
+        <!-- D3: Demographic (bottom left) -->
+        <circle cx="140" cy="300" r="36" fill="#b8860b"/>
+        <text x="140" y="291" text-anchor="middle" fill="white" font-size="10" font-weight="700">DEMOGRAPHIC</text>
+        <text x="140" y="304" text-anchor="middle" fill="white" font-size="10" font-weight="700">PROFILE</text>
+        <text x="140" y="317" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9">D3</text>
+        <line x1="338" y1="218" x2="175" y2="268" stroke="#b8860b" stroke-width="2"/>
+        <polygon points="338,218 324,218 330,230" fill="#b8860b"/>
+
+        <!-- D4: Livelihood (bottom right) -->
+        <circle cx="628" cy="300" r="36" fill="#6c3483"/>
+        <text x="628" y="288" text-anchor="middle" fill="white" font-size="10" font-weight="700">LIVELIHOOD</text>
+        <text x="628" y="301" text-anchor="middle" fill="white" font-size="10" font-weight="700">PROFILE</text>
+        <text x="628" y="314" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9">D4</text>
+        <line x1="442" y1="218" x2="594" y2="268" stroke="#6c3483" stroke-width="2"/>
+        <polygon points="442,218 452,230 455,218" fill="#6c3483"/>
+
+        <!-- D5: Cognition (top right) -->
+        <circle cx="605" cy="100" r="36" fill="#1a6b3c"/>
+        <text x="605" y="91" text-anchor="middle" fill="white" font-size="10" font-weight="700">COGNITION</text>
+        <text x="605" y="104" text-anchor="middle" fill="white" font-size="10" font-weight="700">LAYER</text>
+        <text x="605" y="117" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9">D5 (active)</text>
+        <line x1="440" y1="168" x2="570" y2="122" stroke="#1a6b3c" stroke-width="2"/>
+        <polygon points="440,168 434,156 448,162" fill="#1a6b3c"/>
+
+        <!-- Output arrow to AI Engine -->
+        <rect x="610" y="178" width="150" height="44" rx="6" fill="#1a1a2e"/>
+        <text x="685" y="197" text-anchor="middle" fill="white" font-size="11" font-weight="600">LIVELIHOOD AI</text>
+        <text x="685" y="213" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-size="10">Intelligence Engine</text>
+        <line x1="442" y1="200" x2="610" y2="200" stroke="#1a1a2e" stroke-width="2" stroke-dasharray="5,3"/>
+        <polygon points="610,200 598,195 598,205" fill="#1a1a2e"/>
+
+        <!-- Sub-labels -->
+        <text x="175" y="144" text-anchor="middle" fill="#0d6e6e" font-size="9">Named boundaries</text>
+        <text x="175" y="155" text-anchor="middle" fill="#0d6e6e" font-size="9">Cultural tags</text>
+
+        <text x="140" y="341" text-anchor="middle" fill="#b8860b" font-size="9">Age · Gender · Education</text>
+        <text x="140" y="352" text-anchor="middle" fill="#b8860b" font-size="9">Income band · Household</text>
+
+        <text x="628" y="341" text-anchor="middle" fill="#6c3483" font-size="9">Aspirations · Risk appetite</text>
+        <text x="628" y="352" text-anchor="middle" fill="#6c3483" font-size="9">Belief proxy · Skills</text>
+
+        <text x="605" y="144" text-anchor="middle" fill="#1a6b3c" font-size="9">Micro-tasks · Scenarios</text>
+        <text x="605" y="155" text-anchor="middle" fill="#1a6b3c" font-size="9">Decision heuristics</text>
+
+        <!-- Multiplier callout -->
+        <rect x="30" y="375" width="720" height="32" rx="4" fill="#f5f2ea" stroke="#d8d4cc"/>
+        <text x="390" y="395" text-anchor="middle" fill="#1a1a2e" font-size="12" font-weight="600">One citizen action → Five simultaneous, cross-linked intelligence dimensions</text>
+      </svg>
+      <div class="figure-caption">Each verified citizen is both an annotator and a structured data source. A single action (annotation) triggers the capture of four additional profiled dimensions, all cross-linked to produce multi-dimensional intelligence rather than a flat label.</div>
+    </div>
+
+    <h3 class="subsection">3.3 The Compounding Effect: Intelligence Sharpens Over Time</h3>
+    <p>
+      A critical property of the CitL architecture is that annotation value is not static — it compounds. As a citizen participates in more micro-tasks, their livelihood and cognition profiles deepen. As more citizens from a given hyperlocal territory participate, the territory's own profile sharpens. The result is a positive feedback loop: each additional annotation is more valuable than the last, because it joins a richer matrix of contextual data.
+    </p>
+    <p>
+      Under HITL, annotation N has roughly the same informational value as annotation 1. Under CitL, annotation N is enriched by all N−1 previous annotations from the same citizen, all annotations from their territory, and all annotations from demographically similar citizens across the network. The intelligence compounds rather than simply accumulates.
+    </p>
+
+    <!-- Figure 3: Intelligence Compounding Curve -->
+    <div class="figure">
+      <div class="figure-title">Figure 3 — Intelligence Compounding: CitL vs. HITL Over Annotation Cycles</div>
+      <svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:700px;display:block;margin:0 auto;">
+        <rect x="0" y="0" width="700" height="320" fill="white" rx="4"/>
+
+        <!-- Axes -->
+        <line x1="70" y1="260" x2="650" y2="260" stroke="#d8d4cc" stroke-width="1.5"/>
+        <line x1="70" y1="40" x2="70" y2="260" stroke="#d8d4cc" stroke-width="1.5"/>
+
+        <!-- Axis labels -->
+        <text x="360" y="290" text-anchor="middle" fill="#9090aa" font-size="12">Annotation Cycles (Time →)</text>
+        <text x="22" y="155" text-anchor="middle" fill="#9090aa" font-size="12" transform="rotate(-90,22,155)">Intelligence Value</text>
+
+        <!-- Y axis ticks -->
+        <text x="62" y="264" text-anchor="end" fill="#9090aa" font-size="10">0</text>
+        <text x="62" y="212" text-anchor="end" fill="#9090aa" font-size="10">20</text>
+        <text x="62" y="160" text-anchor="end" fill="#9090aa" font-size="10">40</text>
+        <text x="62" y="108" text-anchor="end" fill="#9090aa" font-size="10">60</text>
+        <text x="62" y="56" text-anchor="end" fill="#9090aa" font-size="10">80</text>
+        <line x1="67" y1="260" x2="73" y2="260" stroke="#d8d4cc"/>
+        <line x1="67" y1="208" x2="73" y2="208" stroke="#d8d4cc"/>
+        <line x1="67" y1="156" x2="73" y2="156" stroke="#d8d4cc"/>
+        <line x1="67" y1="104" x2="73" y2="104" stroke="#d8d4cc"/>
+        <line x1="67" y1="52" x2="73" y2="52" stroke="#d8d4cc"/>
+
+        <!-- X axis ticks -->
+        <text x="70" y="274" text-anchor="middle" fill="#9090aa" font-size="10">0</text>
+        <text x="186" y="274" text-anchor="middle" fill="#9090aa" font-size="10">5</text>
+        <text x="302" y="274" text-anchor="middle" fill="#9090aa" font-size="10">10</text>
+        <text x="418" y="274" text-anchor="middle" fill="#9090aa" font-size="10">15</text>
+        <text x="534" y="274" text-anchor="middle" fill="#9090aa" font-size="10">20</text>
+        <text x="650" y="274" text-anchor="middle" fill="#9090aa" font-size="10">25</text>
+
+        <!-- Grid lines -->
+        <line x1="70" y1="208" x2="650" y2="208" stroke="#f0eeea" stroke-width="1"/>
+        <line x1="70" y1="156" x2="650" y2="156" stroke="#f0eeea" stroke-width="1"/>
+        <line x1="70" y1="104" x2="650" y2="104" stroke="#f0eeea" stroke-width="1"/>
+        <line x1="70" y1="52" x2="650" y2="52" stroke="#f0eeea" stroke-width="1"/>
+
+        <!-- HITL line (linear, low slope) -->
+        <!-- y = 260 - (x-70)/580 * (260-200) -->
+        <polyline points="70,260 186,251 302,243 418,235 534,226 650,218"
+          fill="none" stroke="#c0bbb0" stroke-width="2.5" stroke-dasharray="6,4"/>
+
+        <!-- CitL line (exponential curve approximation) -->
+        <!-- Starts same, then curves up dramatically -->
+        <path d="M70,260 C120,256 186,245 240,232 C300,215 360,190 420,158 C480,124 550,88 650,48"
+          fill="none" stroke="#0d6e6e" stroke-width="3"/>
+
+        <!-- Area under CitL -->
+        <path d="M70,260 C120,256 186,245 240,232 C300,215 360,190 420,158 C480,124 550,88 650,48 L650,260 Z"
+          fill="rgba(13,110,110,0.08)"/>
+
+        <!-- Labels -->
+        <rect x="490" y="200" width="140" height="22" rx="3" fill="white"/>
+        <line x1="480" y1="230" x2="492" y2="212" stroke="#c0bbb0" stroke-width="1.5"/>
+        <text x="492" y="195" fill="#9090aa" font-size="12" font-weight="600">HITL</text>
+        <text x="492" y="209" fill="#9090aa" font-size="10">(linear accumulation)</text>
+
+        <text x="560" y="75" fill="#0d6e6e" font-size="12" font-weight="700">CitL</text>
+        <text x="556" y="89" fill="#0d6e6e" font-size="10">(compounding intelligence)</text>
+
+        <!-- Divergence annotation -->
+        <line x1="302" y1="156" x2="302" y2="100" stroke="#c0392b" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="310" y="96" fill="#c0392b" font-size="10">Divergence</text>
+        <text x="310" y="108" fill="#c0392b" font-size="10">accelerates</text>
+      </svg>
+      <div class="figure-caption">Under HITL, intelligence accumulates linearly — each annotation adds roughly equal value. Under CitL, each annotation enriches an already-profiled matrix, producing compounding intelligence returns that widen significantly over time.</div>
+    </div>
+
+  </div>
+
+  <!-- Section 4 -->
+  <div class="section">
+    <div class="section-number">Section 4</div>
+    <h2 class="section-title">The CitL Technical Architecture</h2>
+    <p>
+      Implementing Citizens in the Loop requires an architecture that is fundamentally different from standard annotation pipelines. It has four layers: <strong>Verification</strong>, <strong>Profile Construction</strong>, <strong>Micro-Task Engine</strong>, and the <strong>Annotation Mapping and Aggregation Engine</strong>.
+    </p>
+
+    <!-- Figure 4: Process Flow -->
+    <div class="figure">
+      <div class="figure-title">Figure 4 — CitL System Architecture and Process Flow</div>
+      <svg viewBox="0 0 760 500" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:760px;display:block;margin:0 auto;">
+        <rect x="0" y="0" width="760" height="500" fill="white" rx="4"/>
+
+        <!-- Layer 1: Verification -->
+        <rect x="20" y="20" width="720" height="80" rx="6" fill="#1a1a2e"/>
+        <text x="380" y="45" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="10" letter-spacing="2">LAYER 1</text>
+        <text x="380" y="63" text-anchor="middle" fill="white" font-size="14" font-weight="700">Citizen Verification &amp; Onboarding</text>
+        <text x="380" y="82" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-size="11">Identity · Residential location · Hyperlocal territory assignment · Informed consent</text>
+
+        <!-- Arrow 1→2 -->
+        <polygon points="380,105 374,100 386,100" fill="#d8d4cc"/>
+        <line x1="380" y1="100" x2="380" y2="115" stroke="#d8d4cc" stroke-width="1.5"/>
+
+        <!-- Layer 2: Profile Construction (3 columns) -->
+        <text x="380" y="128" text-anchor="middle" fill="#9090aa" font-size="10" letter-spacing="2">LAYER 2 — PROFILE CONSTRUCTION</text>
+
+        <!-- Territory box -->
+        <rect x="20" y="135" width="220" height="90" rx="5" fill="#e0f2f1" stroke="#0d6e6e"/>
+        <text x="130" y="157" text-anchor="middle" fill="#0d6e6e" font-size="11" font-weight="700">Territory Profile</text>
+        <text x="130" y="173" text-anchor="middle" fill="#5a5a7a" font-size="10">Named boundaries</text>
+        <text x="130" y="187" text-anchor="middle" fill="#5a5a7a" font-size="10">Cultural &amp; occupational character</text>
+        <text x="130" y="201" text-anchor="middle" fill="#5a5a7a" font-size="10">Informal economy mapping</text>
+        <text x="130" y="215" text-anchor="middle" fill="#5a5a7a" font-size="10">Infrastructure gap index</text>
+
+        <!-- Demographic box -->
+        <rect x="270" y="135" width="220" height="90" rx="5" fill="#f9f3e0" stroke="#b8860b"/>
+        <text x="380" y="157" text-anchor="middle" fill="#b8860b" font-size="11" font-weight="700">Demographic Profile</text>
+        <text x="380" y="173" text-anchor="middle" fill="#5a5a7a" font-size="10">Age · Gender · Education</text>
+        <text x="380" y="187" text-anchor="middle" fill="#5a5a7a" font-size="10">Household structure</text>
+        <text x="380" y="201" text-anchor="middle" fill="#5a5a7a" font-size="10">Income band · Dependents</text>
+        <text x="380" y="215" text-anchor="middle" fill="#5a5a7a" font-size="10">Migration history</text>
+
+        <!-- Livelihood box -->
+        <rect x="520" y="135" width="220" height="90" rx="5" fill="#f3e8f8" stroke="#6c3483"/>
+        <text x="630" y="157" text-anchor="middle" fill="#6c3483" font-size="11" font-weight="700">Livelihood Profile</text>
+        <text x="630" y="173" text-anchor="middle" fill="#5a5a7a" font-size="10">Occupation history &amp; current role</text>
+        <text x="630" y="187" text-anchor="middle" fill="#5a5a7a" font-size="10">Skill self-assessment</text>
+        <text x="630" y="201" text-anchor="middle" fill="#5a5a7a" font-size="10">Aspirations &amp; blockers</text>
+        <text x="630" y="215" text-anchor="middle" fill="#5a5a7a" font-size="10">Income stream mapping</text>
+
+        <!-- Arrow 2→3 -->
+        <line x1="380" y1="225" x2="380" y2="245" stroke="#d8d4cc" stroke-width="1.5"/>
+        <polygon points="380,248 374,238 386,238" fill="#d8d4cc"/>
+        <text x="380" y="243" text-anchor="middle" fill="#9090aa" font-size="9">Profile construction complete → triggers micro-task personalisation</text>
+
+        <!-- Layer 3: Micro-task engine -->
+        <rect x="20" y="250" width="720" height="75" rx="6" fill="#1a6b3c"/>
+        <text x="380" y="272" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="10" letter-spacing="2">LAYER 3</text>
+        <text x="380" y="290" text-anchor="middle" fill="white" font-size="14" font-weight="700">Cognition Capture Engine (Micro-Task Layer)</text>
+        <text x="380" y="311" text-anchor="middle" fill="rgba(255,255,255,0.65)" font-size="11">Profile-personalised scenarios · Contextual dilemmas · Response pattern mapping · Cognitive heuristic extraction</text>
+
+        <!-- Arrow 3→4 -->
+        <line x1="380" y1="325" x2="380" y2="345" stroke="#d8d4cc" stroke-width="1.5"/>
+        <polygon points="380,348 374,338 386,338" fill="#d8d4cc"/>
+
+        <!-- Layer 4: Annotation mapping -->
+        <rect x="20" y="350" width="440" height="80" rx="6" fill="#c0392b"/>
+        <text x="240" y="371" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="10" letter-spacing="2">LAYER 4</text>
+        <text x="240" y="389" text-anchor="middle" fill="white" font-size="13" font-weight="700">Annotation Mapping Engine</text>
+        <text x="240" y="408" text-anchor="middle" fill="rgba(255,255,255,0.65)" font-size="11">Cross-links D1–D5 · Contextualises output · Feeds AI model</text>
+
+        <!-- Output box -->
+        <rect x="490" y="350" width="250" height="80" rx="6" fill="#1a1a2e"/>
+        <text x="615" y="371" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="10" letter-spacing="2">OUTPUT</text>
+        <text x="615" y="390" text-anchor="middle" fill="white" font-size="13" font-weight="700">Sovereign Livelihood AI</text>
+        <text x="615" y="408" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-size="10">Policy · Guidance · Matching · Simulation</text>
+
+        <!-- Arrow L4→output -->
+        <line x1="460" y1="390" x2="488" y2="390" stroke="white" stroke-width="2"/>
+        <polygon points="488,390 478,385 478,395" fill="white"/>
+
+        <!-- Feedback loop -->
+        <path d="M615,430 L615,460 L380,460 L380,430" fill="none" stroke="#0d6e6e" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <text x="500" y="475" text-anchor="middle" fill="#0d6e6e" font-size="10">↺  Continuous feedback loop — model outputs refine citizen micro-task design</text>
+        <polygon points="380,430 374,442 386,442" fill="#0d6e6e"/>
+      </svg>
+      <div class="figure-caption">The four-layer CitL pipeline transforms citizen onboarding into a continuous intelligence engine. The feedback loop ensures that model outputs inform the design of subsequent micro-tasks, progressively sharpening both individual profiles and collective intelligence.</div>
+    </div>
+
+    <h3 class="subsection">4.1 The Cognition Layer: What Makes CitL Self-Improving</h3>
+    <p>
+      The cognition capture layer deserves particular attention, as it represents the most technically novel aspect of CitL. Unlike demographic and livelihood profiles — which are captured through survey instruments and can be partially inferred from existing data — cognition cannot be observed. It must be elicited. And it can only be reliably elicited in context.
+    </p>
+    <p>
+      The micro-task engine generates bespoke cognitive probes for each citizen profile. A citizen with a livelihood profile indicating gig work in the informal economy, located in a territory with high debt prevalence, might receive a scenario involving a trade-off between short-term cash and longer-term stability. Their response is not evaluated as right or wrong — it is mapped onto a multi-dimensional cognitive profile that captures time preference, risk tolerance, trust in institutions, and decision heuristics under uncertainty.
+    </p>
+    <p>
+      Critically, this cognition data is what enables Livelihood AI to model the kinds of decisions that confound every conventional model: <strong>why a worker in debt turns down a stable job; why a skilled artisan resists formalisation; why an educated young person chooses gig work over a graduate career track.</strong> These are not irrational choices. They are deeply reasoned responses to complex contextual realities — and CitL is the only architecture capable of capturing the signals that explain them.
+    </p>
+  </div>
+
+  <!-- Section 5 -->
+  <div class="section">
+    <div class="section-number">Section 5</div>
+    <h2 class="section-title">Sovereign Livelihood AI: CitL in Practice</h2>
+
+    <h3 class="subsection">5.1 Why Livelihood AI Demands CitL</h3>
+    <p>
+      Livelihood — the set of decisions, capabilities, and pathways through which a person sustains their economic life — is the most contextually determined domain of human behaviour. A livelihood AI model that attempts to function without CitL-quality data is not merely imprecise: it is making decisions about human beings using evidence that systematically excludes the most important variables about those human beings.
+    </p>
+    <p>
+      Four layers of the human brain determine every livelihood decision: <strong>socio-economic background</strong> (financial pressure, debt, family obligations), <strong>cultural and regional nuance</strong> (community norms, local beliefs), <strong>aspirations and self-perception</strong> (how a person sees themselves and their future), and <strong>skills combined with behavioural patterns</strong> (actual capabilities paired with characteristic responses to situations). CitL's five annotation dimensions map directly to these four layers — with livelihood profile (D4) and cognition layer (D5) together providing what no other data architecture can supply.
+    </p>
+
+    <h3 class="subsection">5.2 Case Study: The Saksham Skill Census, Mumbai Suburban</h3>
+    <p>
+      The Saksham Kaushalya Sarvekshan (Skill Census), implemented under contract with the District Skill Development, Employment and Entrepreneurship Guidance Centre (DSDEEGC), Mumbai Suburban, is the most advanced live implementation of CitL principles in the world today.
+    </p>
+    <p>
+      Across the H/West Ward — covering Bandra West, Khar West, and Santacruz West — over 32,950 households have been enumerated, producing verified citizen profiles that link territorial data (108 hyperlocal territories, each with their own profile), demographic data, and livelihood intelligence at individual and household level. The enumeration is not a static survey: it is the first layer of a continuous CitL pipeline designed to evolve as citizens continue to engage with the system.
+    </p>
+    <p>
+      The intelligence generated is already qualitatively different from what any conventional survey or HITL annotation exercise could produce. Locality-specific employment patterns, informal income pathways, skill-aspiration mismatches, and household-level financial stress indices are available at a granularity — the territory level, not the ward level — that makes dynamic, localised policy simulation possible for the first time.
+    </p>
+
+    <h3 class="subsection">5.3 Case Study: Myanmar Financial Inclusion</h3>
+    <p>
+      An earlier instantiation of the Citizens in the Loop principle was demonstrated in Myanmar's financial inclusion programme. Starting from a base of under 30% digital finance penetration, a network of over 20,000 citizen agents was deployed — each a verified local resident whose work and outputs were cross-referenced with their hyperlocal context.
+    </p>
+    <p>
+      The programme achieved 100% financial inclusion within its target territories. Critically, it did so without top-down supervision infrastructure: the network effect of profiled, contextually aware citizen agents replaced formal management overhead. The peer learning dynamics — where best-performer methods were captured, contextualised, and propagated — demonstrated in practice the compounding intelligence property that is theorised above.
+    </p>
+
+    <!-- Figure 5: Feedback loop diagram -->
+    <div class="figure">
+      <div class="figure-title">Figure 5 — The CitL → Livelihood AI Continuous Feedback Loop</div>
+      <svg viewBox="0 0 700 360" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:700px;display:block;margin:0 auto;">
+        <rect x="0" y="0" width="700" height="360" fill="white" rx="4"/>
+
+        <!-- Central ring -->
+        <circle cx="350" cy="180" r="90" fill="none" stroke="#e8e4dc" stroke-width="30"/>
+        <circle cx="350" cy="180" r="90" fill="none" stroke="#f5f2ea" stroke-width="28"/>
+
+        <!-- 5 nodes around circle -->
+        <!-- Top: Citizen Verification -->
+        <circle cx="350" cy="68" r="38" fill="#1a1a2e"/>
+        <text x="350" y="62" text-anchor="middle" fill="white" font-size="10" font-weight="700">CITIZEN</text>
+        <text x="350" y="75" text-anchor="middle" fill="white" font-size="10" font-weight="700">VERIFICATION</text>
+
+        <!-- Top-right: Profile Build -->
+        <circle cx="482" cy="130" r="38" fill="#0d6e6e"/>
+        <text x="482" y="124" text-anchor="middle" fill="white" font-size="10" font-weight="700">PROFILE</text>
+        <text x="482" y="137" text-anchor="middle" fill="white" font-size="10" font-weight="700">BUILD</text>
+
+        <!-- Bottom-right: Micro-tasks -->
+        <circle cx="454" cy="266" r="38" fill="#1a6b3c"/>
+        <text x="454" y="260" text-anchor="middle" fill="white" font-size="10" font-weight="700">MICRO-</text>
+        <text x="454" y="273" text-anchor="middle" fill="white" font-size="10" font-weight="700">TASKS</text>
+
+        <!-- Bottom-left: Intelligence Engine -->
+        <circle cx="246" cy="266" r="38" fill="#c0392b"/>
+        <text x="246" y="257" text-anchor="middle" fill="white" font-size="10" font-weight="700">AI</text>
+        <text x="246" y="270" text-anchor="middle" fill="white" font-size="10" font-weight="700">ENGINE</text>
+        <text x="246" y="283" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="9">+ Feedback</text>
+
+        <!-- Top-left: Policy/Guidance output -->
+        <circle cx="218" cy="130" r="38" fill="#6c3483"/>
+        <text x="218" y="124" text-anchor="middle" fill="white" font-size="10" font-weight="700">POLICY &amp;</text>
+        <text x="218" y="137" text-anchor="middle" fill="white" font-size="10" font-weight="700">GUIDANCE</text>
+
+        <!-- Arc arrows (clockwise) -->
+        <!-- 1→2 -->
+        <path d="M 380,76 A 90,90 0 0,1 462,140" fill="none" stroke="#1a1a2e" stroke-width="2.5"/>
+        <polygon points="462,140 448,138 455,126" fill="#1a1a2e"/>
+
+        <!-- 2→3 -->
+        <path d="M 502,162 A 90,90 0 0,1 474,256" fill="none" stroke="#0d6e6e" stroke-width="2.5"/>
+        <polygon points="474,256 462,248 472,238" fill="#0d6e6e"/>
+
+        <!-- 3→4 -->
+        <path d="M 422,280 A 90,90 0 0,1 278,280" fill="none" stroke="#1a6b3c" stroke-width="2.5"/>
+        <polygon points="278,280 282,266 290,276" fill="#1a6b3c"/>
+
+        <!-- 4→5 -->
+        <path d="M 226,238 A 90,90 0 0,1 198,162" fill="none" stroke="#c0392b" stroke-width="2.5"/>
+        <polygon points="198,162 210,170 200,156" fill="#c0392b"/>
+
+        <!-- 5→1 -->
+        <path d="M 238,106 A 90,90 0 0,1 322,72" fill="none" stroke="#6c3483" stroke-width="2.5"/>
+        <polygon points="322,72 318,86 308,76" fill="#6c3483"/>
+
+        <!-- Center label -->
+        <text x="350" y="174" text-anchor="middle" fill="#1a1a2e" font-size="13" font-weight="700">CitL</text>
+        <text x="350" y="190" text-anchor="middle" fill="#9090aa" font-size="10">Continuous</text>
+        <text x="350" y="204" text-anchor="middle" fill="#9090aa" font-size="10">Loop</text>
+
+        <!-- Edge labels -->
+        <text x="440" y="106" text-anchor="middle" fill="#5a5a7a" font-size="9">Profile captured</text>
+        <text x="508" y="205" text-anchor="middle" fill="#5a5a7a" font-size="9">Tasks personalised</text>
+        <text x="350" y="310" text-anchor="middle" fill="#5a5a7a" font-size="9">Cognition mapped → AI trained</text>
+        <text x="190" y="210" text-anchor="middle" fill="#5a5a7a" font-size="9">Insights delivered</text>
+        <text x="256" y="94" text-anchor="middle" fill="#5a5a7a" font-size="9">Tasks refined by outcomes</text>
+      </svg>
+      <div class="figure-caption">The CitL process is not a linear pipeline but a continuous loop. AI model outputs feed back into micro-task design, ensuring each iteration of citizen engagement is more precisely calibrated than the last.</div>
+    </div>
+
+  </div>
+
+  <!-- Section 6 -->
+  <div class="section">
+    <div class="section-number">Section 6</div>
+    <h2 class="section-title">Implications and Future Directions</h2>
+
+    <!-- Figure 6: Data richness bar chart -->
+    <div class="figure">
+      <div class="figure-title">Figure 6 — Annotation Value Comparison: Data Dimensions Per Annotation Event</div>
+      <svg viewBox="0 0 680 300" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:680px;display:block;margin:0 auto;">
+        <rect x="0" y="0" width="680" height="300" fill="white" rx="4"/>
+
+        <!-- Axes -->
+        <line x1="100" y1="240" x2="600" y2="240" stroke="#d8d4cc" stroke-width="1.5"/>
+        <line x1="100" y1="40" x2="100" y2="240" stroke="#d8d4cc" stroke-width="1.5"/>
+
+        <!-- Y axis labels -->
+        <text x="92" y="244" text-anchor="end" fill="#9090aa" font-size="10">0</text>
+        <text x="92" y="196" text-anchor="end" fill="#9090aa" font-size="10">1</text>
+        <text x="92" y="148" text-anchor="end" fill="#9090aa" font-size="10">2</text>
+        <text x="92" y="100" text-anchor="end" fill="#9090aa" font-size="10">3</text>
+        <text x="92" y="52" text-anchor="end" fill="#9090aa" font-size="10">4</text>
+
+        <!-- Grid -->
+        <line x1="100" y1="196" x2="600" y2="196" stroke="#f0eeea" stroke-width="1"/>
+        <line x1="100" y1="148" x2="600" y2="148" stroke="#f0eeea" stroke-width="1"/>
+        <line x1="100" y1="100" x2="600" y2="100" stroke="#f0eeea" stroke-width="1"/>
+        <line x1="100" y1="52" x2="600" y2="52" stroke="#f0eeea" stroke-width="1"/>
+
+        <!-- HITL bar: 1 dimension -->
+        <rect x="130" y="196" width="140" height="44" fill="#e8e6f0" stroke="#d8d4cc"/>
+        <text x="200" y="188" text-anchor="middle" fill="#9090aa" font-size="11">1 dimension</text>
+        <text x="200" y="258" text-anchor="middle" fill="#5a5a7a" font-size="12">HITL</text>
+        <text x="200" y="271" text-anchor="middle" fill="#9090aa" font-size="10">Specialist Annotator</text>
+
+        <!-- CitL basic bar: 5 dimensions (initial engagement) -->
+        <rect x="310" y="52" width="140" height="188" fill="#0d6e6e" opacity="0.8"/>
+        <text x="380" y="44" text-anchor="middle" fill="#0d6e6e" font-size="11" font-weight="700">5 dimensions</text>
+        <text x="380" y="258" text-anchor="middle" fill="#5a5a7a" font-size="12">CitL (initial)</text>
+        <text x="380" y="271" text-anchor="middle" fill="#9090aa" font-size="10">First engagement</text>
+
+        <!-- CitL mature bar: could be 7+ (compounded) — represented as 5 base + overlay -->
+        <rect x="450" y="52" width="140" height="188" fill="#0d6e6e" opacity="0.85"/>
+        <rect x="450" y="20" width="140" height="32" fill="#1a6b3c"/>
+        <text x="520" y="13" text-anchor="middle" fill="#1a6b3c" font-size="11" font-weight="700">5+ compounding</text>
+        <text x="520" y="258" text-anchor="middle" fill="#5a5a7a" font-size="12">CitL (mature)</text>
+        <text x="520" y="271" text-anchor="middle" fill="#9090aa" font-size="10">After N engagements</text>
+
+        <!-- Y axis title -->
+        <text x="30" y="145" text-anchor="middle" fill="#9090aa" font-size="11" transform="rotate(-90,30,145)">Linked Data Dimensions per Annotation</text>
+
+        <!-- Multiplier label -->
+        <text x="380" y="120" text-anchor="middle" fill="white" font-size="16" font-weight="700">5×</text>
+        <text x="380" y="138" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="10">minimum</text>
+      </svg>
+      <div class="figure-caption">A single CitL annotation captures a minimum of five linked data dimensions from first engagement, versus one for HITL. In mature CitL profiles, the effective data density is substantially higher as historical annotations enrich the contextual matrix.</div>
+    </div>
+
+    <h3 class="subsection">6.1 Policy Design Implications</h3>
+    <p>
+      The immediate implication of CitL-quality intelligence for government is the end of policy-by-approximation. When a district government currently designs a skilling intervention, it works from ward-level aggregate data that may include 50,000 to 500,000 people. The intervention is designed for an average that describes no one. CitL intelligence enables <strong>territory-level policy simulation</strong> — testing the projected impact of a course subsidy, a wage floor, or a formalisation incentive on the specific population of a specific locality, before a rupee is spent.
+    </p>
+    <p>
+      This is not an incremental improvement. It is a step-change in the information available to policymakers — equivalent, in its implications for governance, to what GPS did for navigation.
+    </p>
+
+    <h3 class="subsection">6.2 Sovereign AI and Open-Source Potential</h3>
+    <p>
+      A Livelihood AI model trained on CitL data does not depend on enterprise LLM infrastructure. Its training corpus — grounded in verified, profiled, contextual citizen intelligence — enables region-specific model training on open-source architectures. This is the meaning of <em>Sovereign Livelihood AI</em>: intelligence that is generated by, and belongs to, the communities it serves. It cannot be replicated from the internet. It cannot be approximated by any model trained only on public data. It is, by construction, the exclusive property of the institutions and citizens who create it.
+    </p>
+
+    <h3 class="subsection">6.3 Beyond Livelihood: The General Principle</h3>
+    <p>
+      While this paper has focused on livelihood as the domain, the CitL principle extends to any domain where the most important variables are hyperlocal, contextual, and culturally embedded — and therefore structurally absent from internet-scale training data. Climate adaptation behaviours, informal healthcare choices, community conflict dynamics, and grassroots political participation are all domains where CitL could generate categorical improvements over HITL-based approaches.
+    </p>
+    <p>
+      The general principle is this: wherever the annotator's personal context is the variable of interest — not a confound to be controlled for, but the primary signal to be captured — Citizens in the Loop is not an alternative to Humans in the Loop. It is its necessary successor.
+    </p>
+  </div>
+
+  <!-- Section 7: Conclusion -->
+  <div class="section">
+    <div class="section-number">Section 7</div>
+    <h2 class="section-title">Conclusion</h2>
+    <p>
+      The Humans in the Loop paradigm built the first generation of aligned AI. Its contributions are real and its methods will continue to play a role in general-purpose model development. But it rests on an architectural assumption — that the annotator's context is irrelevant — that makes it constitutionally unsuited to the most consequential applications of AI in human society: the systems that will guide billions of people's livelihoods, aspirations, and economic futures.
+    </p>
+    <p>
+      Citizens in the Loop is not a modest refinement of HITL. It is a reconceptualisation of who participates in AI creation, what they contribute, and how that contribution is used. By treating every verified citizen as a richly profiled intelligence node — whose single action generates five cross-linked data dimensions — CitL produces annotation datasets of a depth and contextual richness that no specialist annotator pool can approach.
+    </p>
+    <p>
+      When deployed as the foundation of Sovereign Livelihood AI, CitL enables something that has never existed before: an AI system that genuinely understands why a person living in Bihari Gully makes the livelihood choices they do. Not because it has been told about them by an outside observer. But because it has learned, directly and continuously, from the citizens themselves — in their own context, on their own terms, with their own intelligence at the centre of the loop.
+    </p>
+    <blockquote class="pull">
+      <p>"The world's most important intelligence isn't in data centres. It's in the minds and lived realities of 8 billion people — most of whom have never been meaningfully asked. Citizens in the Loop is the architecture that finally asks."</p>
+    </blockquote>
+  </div>
+
+  <!-- Citation / About -->
+  <div style="margin-top:56px; border-top: 1px solid var(--rule); padding-top: 32px;">
+    <div style="font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 12px;">Suggested Citation</div>
+    <p style="font-size: 13.5px; color: var(--ink-light); font-style: italic; line-height: 1.7;">
+      Srivastava, A. (2026). <em>Citizens in the AI Loop: The Key Driver of Sovereign Livelihood AI.</em> Pre-publication working paper. Sapio Analytics × ARC. Mumbai.
+    </p>
+    <div class="footnote" style="margin-top: 24px;">
+      * The ">80% of knowledge" figure refers to knowledge relevant to hyperlocal livelihood decisions that is not indexed on the public internet, based on operational findings from the Saksham Skill Census (H/West Ward, Mumbai Suburban, 2025–2026). This is a working paper circulated for comment and review. All case study data drawn from Sapio Analytics operational programmes.
+    </div>
+  </div>
+
+  <!-- Contributors -->
+  <div style="margin-top: 40px; border-top: 1px solid var(--rule); padding-top: 28px;">
+    <div style="font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 14px;">Contributors &amp; Attributions</div>
+    <p style="font-size: 13px; color: var(--ink-light); line-height: 1.85; margin-bottom: 10px;">
+      This paper attributes to the works of <strong style="color: var(--ink-mid);">Mike Denoma and the team of CodecaX</strong>, who transformed Myanmar with their innovative approach towards working with the citizens of a country. The paper also attributes to the works of <strong style="color: var(--ink-mid);">Saurabh Katiyar, IAS</strong>, under the guidance of <strong style="color: var(--ink-mid);">Shri Ashish Shelar</strong>, Guardian Minister, Mumbai Suburban, whose vision has shaped the use case of Citizens in the Loop. The works in this paper draw from years of research by <strong style="color: var(--ink-mid);">Sapio Analytics</strong>, focused on capturing intelligence from the ground, that led to the understanding of the significance of hyperlocal profiling. All leaders of Sapio Analytics — <strong style="color: var(--ink-mid);">Hardik Somani, Prashant Nikam, and S. Krishnan</strong> — have contributed to the creation of such research. The works also attribute their knowledge to the creators of the <strong style="color: var(--ink-mid);">ARC platform</strong>, led by <strong style="color: var(--ink-mid);">Rick Rummler and Francis D'Souza</strong>, partnering with the team of Sapio Analytics, who helped validate the concept of citizen engagement in building new AI through the use of a smart platform.
+    </p>
+  </div>
+
+</div>
+
+<footer>
+  <strong>Citizens in the AI Loop · Sovereign Livelihood AI Series</strong><br>
+  Ashwin Srivastava &nbsp;·&nbsp; Sapio Analytics × ARC &nbsp;·&nbsp; Mumbai, 2026<br>
+  Pre-Publication Working Paper · For Review and Circulation<br>
+  ashwin@sapioglobal.com
+</footer>
+
+</body>
+</html>
